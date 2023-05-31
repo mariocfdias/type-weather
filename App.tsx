@@ -1,35 +1,73 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import weatherData from './assets/data.json'
+import { useEffect, useState } from 'react';
+
+interface WeatherInfo {
+  state: string;
+  city: string;
+  date: string;
+  temperature: string;
+  daily_summary: string;
+  wind: string;
+  humidity: string;
+  visibility: string;
+  
+}
+
 export default function App() {
+  const [weatherInfo, setWeatherInfo] = useState<WeatherInfo>(
+    weatherData[Math.floor(Math.random() * weatherData.length)]
+  )
+  useEffect(() => {
+    console.log(weatherInfo)
+    
+
+  }, [weatherInfo])
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.cityName}>
-          Fortaleza - CE
+          {weatherInfo.city}
         </Text>
         <Text style={styles.date}>
-          terça-feira, 20 de maio
+          {weatherInfo.date}
         </Text>
         <Text style={styles.wheaterStatus}>
-          ensolarado
+          {weatherInfo.daily_summary.split(".")[0]}
         </Text>
 
       </View>
       <View style={styles.body}>
         <Text style={styles.data}>
-          31ºC
+          {weatherInfo.temperature}
         </Text>
         <Text style={styles.dailyDescriptionHeader}>
           Resumo diário</Text>
         <Text style={styles.dailyDescriptionHeader}>
-          Agora, sensação térmica de +34º.
-          Possíveis pancadas de chuva ao final do dia.
+          {weatherInfo.daily_summary}
         </Text>
       </View>
       <View style={styles.footer}>
+        <View style={styles.cardContainer}>
         <View style={styles.card}>
-          <Feather name="wind" size={24} color="black" />
-          <Text></Text>
+          <Feather name="wind" size={24} color="yellow" />
+          <Text style={styles.cardValue}>{weatherInfo.wind}</Text>
+          <Text style={styles.cardDescription}>vento</Text>
+          
+        </View>
+        <View style={styles.card}>
+        <FontAwesome5 name="water" size={24} color="yellow" />          
+        <Text style={styles.cardValue}>{weatherInfo.humidity}</Text>
+          <Text style={styles.cardDescription}>humidade</Text>
+          
+        </View>
+        <View style={styles.card}>
+        <FontAwesome name="eye" size={24} color="yellow" />          
+        <Text style={styles.cardValue}>{weatherInfo.visibility}</Text>
+          <Text style={styles.cardDescription}>vento</Text>
+          
+        </View>
         </View>
       </View>
     </View>
@@ -45,8 +83,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    width: 200
-
+    width:"100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   body: {
     flex: 1,
@@ -87,10 +127,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     alignSelf: 'flex-start',
-    marginLeft: 10
+    marginLeft: 10,
+    marginTop: 16
+    
   },
   card: {
-    backgroundColor: '#010001',
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    
+
   },
-  cardDescription: {}
+  cardDescription: {
+    color: "yellow",
+    fontSize: 14,
+    fontWeight: '200'
+
+  },
+  cardValue: {
+    color: "yellow",
+    fontSize: 22,
+    fontWeight: "500"
+  },
+  cardContainer: {
+    flexDirection: "row",
+    backgroundColor: '#010001',
+    borderRadius: 15
+
+  }
 });
